@@ -19,7 +19,7 @@ import io.Source
 import scala.util._
 
 def get_january_data(symbol: String, year: Int) : List[String] = {
-    val allData = Source.fromFile("/home/igor/PEP/CW2/assignment2021scala-IgorJasutowicz/main1/"+symbol+".csv").getLines.toList
+    val allData = Source.fromFile(symbol+".csv").getLines.toList
     val yearResults = allData.filter(i=>List(year.toString).exists(j=>i.startsWith(j)))
     yearResults
 }
