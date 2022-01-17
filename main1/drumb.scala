@@ -18,8 +18,11 @@ val rstate_portfolio = List("PLD", "PSA", "AMT", "AIV", "AVB", "BXP", "CCI",
 import io.Source
 import scala.util._
 
-def get_january_data(symbol: String, year: Int) : List[String] = ???
-
+def get_january_data(symbol: String, year: Int) : List[String] = {
+    val allData = Source.fromFile("/home/igor/PEP/CW2/assignment2021scala-IgorJasutowicz/main1/"+symbol+".csv").getLines.toList
+    val yearResults = allData.filter(i=>List(year.toString).exists(j=>i.startsWith(j)))
+    yearResults
+}
 
 // (2) From the output of the get_january_data function, the next function 
 //     should extract the first line (if it exists) and the corresponding
