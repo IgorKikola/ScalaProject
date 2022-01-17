@@ -10,8 +10,18 @@ object C1 {
 //    performs the recursion. The function should expect
 //    arguments in the range of 1 to 1 Million.
 
-def collatz(n: Long) : Long = ???
-
+def collatz(n: Long) : Long = {
+  val x = 0
+  if (n ==1){
+    0
+  }
+  else if (n % 2 == 0){
+    1+ collatz(n/2)
+  }
+  else{
+  1+ collatz(3*n+1)
+  }
+}
 
 //(2) Complete the collatz_max function below. It should
 //    calculate how many steps are needed for each number 
