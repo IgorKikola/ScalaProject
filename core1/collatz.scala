@@ -11,7 +11,6 @@ object C1 {
 //    arguments in the range of 1 to 1 Million.
 
 def collatz(n: Long) : Long = {
-  val x = 0
   if (n ==1){
     0
   }
@@ -32,8 +31,10 @@ def collatz(n: Long) : Long = {
 //    the maximum number of steps and the second is the 
 //    corresponding number.
 
-def collatz_max(bnd: Long) : (Long, Long) = ???
-
+def collatz_max(bnd: Long) : (Long, Long) = {
+  val x = for (n: Long <- (1.toLong to bnd).toList) yield (collatz(n), n)
+  x.max
+}
 //(3) Implement a function that calculates the last_odd
 //    number in a collatz series.  For this implement an
 //    is_pow_of_two function which tests whether a number 
