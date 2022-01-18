@@ -31,7 +31,17 @@ def get_january_data(symbol: String, year: Int) : List[String] = {
 //     there is a price.
 
 
-def get_first_price(symbol: String, year: Int) : Option[Double] = ???
+def get_first_price(symbol: String, year: Int) : Option[Double] = {
+    val januaryData = get_january_data(symbol, year)
+    if (januaryData.isEmpty){
+        None
+    }
+    else{
+        val firstResultSplit = januaryData.head.split(",")
+        val price = firstResultSplit(1).toDouble
+        Try(Some(price)).getOrElse(None)
+    }
+}    
 
 
 // (3) Complete the function below that obtains all first prices
