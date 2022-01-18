@@ -39,19 +39,7 @@ def occurrences(xs: List[String]): Map[String, Int] = {
 //    The function finally sums up all products. 
 
 
-def prod(lst1: List[String], lst2: List[String]) : Int = {
-    val firstDocument = occurrences(lst1)
-    val secondDocument = occurrences(lst2)
-    val dotProduct = {
-        firstDocument.keySet.intersect(secondDocument.keySet).map(key=>key->(firstDocument(key),secondDocument(key)))
-    }
-    val multipliedValues= {
-        for((x,(key,value))<-dotProduct.toList)yield {
-            key*value
-        }
-    }
-    multipliedValues.sum
-}
+def prod(lst1: List[String], lst2: List[String]) : Int = ???
 
 
 //(4) Complete the functions overlap and similarity. The overlap of
@@ -60,24 +48,7 @@ def prod(lst1: List[String], lst2: List[String]) : Int = {
 //    of the cleaned strings (see (1)).  
 
 
-def overlap(lst1: List[String], lst2: List[String]) : Double = {
-    val d1Product = prod(lst1,lst2).toDouble
-    val d1Max = prod(lst1,lst1).toDouble
-    val d2Max = prod(lst2,lst2).toDouble
-    val highestMax = {
-        if(d1Max >= d2Max){
-            d1Max
-        }
-        else{
-            d2Max
-        }
-    }
-    d1Product/highestMax
-}
+def overlap(lst1: List[String], lst2: List[String]) : Double = ???
 
-def similarity(s1: String, s2: String) : Double = {
-    val firstDocument = clean(s1)
-    val secondDocument = clean(s2)
-    overlap(firstDocument,secondDocument)
-}
+def similarity(s1: String, s2: String) : Double = ???
 }
