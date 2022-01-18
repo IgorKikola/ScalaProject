@@ -84,7 +84,22 @@ def process_movies(lines: List[String]) : List[(String, String)] = {
 //     is set to Map() at the beginning of the calculation.
 
 def groupById(ratings: List[(String, String)], 
-              m: Map[String, List[String]]) : Map[String, List[String]] = ???
+              m: Map[String, List[String]]) : Map[String, List[String]] = {
+    if (ratings ==Nil){
+      m
+    }
+    else{
+      if (!m.contains((ratings.head)._1)){
+        groupById(ratings.tail, m + (ratings.head._1->List(ratings.head._2)))
+      }
+      else{
+      val oldList = m.get(ratings.head._1).get
+      val newList = oldList ++ List(ratings.head._2)
+      val newMap = m - ratings.head._1
+      groupById(ratings.tail, newMap + (ratings.head._1 -> newList))
+      }
+    }
+}
 
 
 // testcases
@@ -110,7 +125,13 @@ def groupById(ratings: List[(String, String)],
 //     otherwise it might happen we recommend the same movie).
 
 
-def favourites(m: Map[String, List[String]], mov: String) : List[List[String]] = ???
+def favourites(m: Map[String, List[String]], mov: String) : List[List[String]] = {
+  val recommendationList = {
+    for (x<-m.values.filter(_.contains(mov)).toList)yield
+    x.filter(_!=mov)
+  }
+  recommendationList
+}
 
 
 // testcases
