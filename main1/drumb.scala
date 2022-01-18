@@ -74,7 +74,33 @@ def get_delta(price_old: Option[Double], price_new: Option[Double]) : Option[Dou
 //     portfolio). The input to this function are the nested lists created by 
 //     get_prices above.
 
-def get_deltas(data: List[List[Option[Double]]]) :  List[List[Option[Double]]] = ???
+def get_deltas(data: List[List[Option[Double]]]) :  List[List[Option[Double]]] = {
+  val listLength = {
+    for (x<-data)yield
+    x.length
+  }
+  val loopSize = listLength.head - 1
+
+  val symbolList ={
+    for(x<-(0 to loopSize).toList)yield
+    for(y<-data) yield
+    y(x)
+  }
+
+  val yearList = {
+    for (x<-symbolList) yield
+    x.length
+  }
+  val yearRange = yearList.head-2
+
+  val delta = {
+    for(x<-(0 to yearRange).toList)yield
+    for(y<-symbolList) yield
+    get_delta(y(x), y(x+1))
+  }
+  delta
+}
+
 
 
 
@@ -82,7 +108,9 @@ def get_deltas(data: List[List[Option[Double]]]) :  List[List[Option[Double]]] =
 //     calculates the yearly yield, i.e. new balance, according to our dumb investment 
 //     strategy. Index points to a year in the data list.
 
-def yearly_yield(data: List[List[Option[Double]]], balance: Long, index: Int) : Long = ???
+def yearly_yield(data: List[List[Option[Double]]], balance: Long, index: Int) : Long = {
+    
+}
 
 
 // (7) Write a function compound_yield that calculates the overall balance for a 
