@@ -27,7 +27,7 @@ def clean(s: String) : List[String] = {
 
 
 def occurrences(xs: List[String]): Map[String, Int] = {
-    val myList = xs.groupBy(i=>i).mapValues(_.size)
+    val myList = xs.distinct.map(v=>(v,xs.filter(_==v).size)).toMap
     myList
 }
 
