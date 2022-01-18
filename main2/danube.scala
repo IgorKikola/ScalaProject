@@ -17,7 +17,10 @@ import scala.util._
 //     the header of the CSV-file). The result is a list of strings (lines
 //     in the file).
 
-def get_csv_url(url: String) : List[String] = ???
+def get_csv_url(url: String) : List[String] = {
+    val csvList = Try(Source.fromURL(url).getLines.toList).getOrElse(List()).drop(1)
+    csvList
+}
 
 
 val ratings_url = """https://nms.kcl.ac.uk/christian.urban/ratings.csv"""
@@ -40,9 +43,27 @@ val movies_url = """https://nms.kcl.ac.uk/christian.urban/movies.csv"""
 //     the argument lines, will be the output of the function get_csv_url.
 
 
-def process_ratings(lines: List[String]) : List[(String, String)] = ???
+def process_ratings(lines: List[String]) : List[(String, String)] = {
+    val ratings = for(line<-lines) yield {
+        line.split(",").toList match {
+        case List(a,b,c) => (a,b,c.toInt)
+        }
+    }
+    val filteredRatings = for ((a,b,c)<-ratings; if (c>=4)) yield{
+        (a,b)
+    }
+    filteredRatings
+}
 
-def process_movies(lines: List[String]) : List[(String, String)] = ???
+def process_movies(lines: List[String]) : List[(String, String)] = {
+  val movies = for (line<-lines) yield {
+    line.split(",").toList match {
+      case List(a,b) => (a,b)
+    }
+  }
+  movies
+}
+
 
 
 // testcases
