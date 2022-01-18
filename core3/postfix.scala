@@ -37,8 +37,20 @@ def split(s: String) : Toks = s.split(" ").toList
 // it helpful to implement two auxiliary functions for the pattern matching:  
 // 
 
-def is_op(op: String) : Boolean = ???
-def prec(op1: String, op2: String) : Boolean = ???
+def is_op(op: String) : Boolean = {
+	op match{case _ => ops.contains(op)}
+}	
+
+def prec(op1: String, op2: String) : Boolean = {
+	 	if(op1 == "(" || op2 == "(")
+		{
+			false
+	 	}
+	 	else
+		{
+	 	precs(op1) >= precs(op2)
+ 		}
+ }
 
 
 def syard(toks: Toks, st: Toks = Nil, out: Toks = Nil) : Toks = ???
