@@ -159,8 +159,8 @@ def suggestions(recs: Map[String, List[String]],
     val favouritesCount = favouritesList.groupBy(identity).mapValues(_.size).toList
     val orderedList = favouritesCount.sortBy(_._2)
     val LowToHigh = {
-      for ((k,v)<- orderedList)yield
-      k
+      for ((key,value)<- orderedList)yield
+      key
     }
     LowToHigh.reverse
 }
@@ -182,7 +182,19 @@ def suggestions(recs: Map[String, List[String]],
 
 def recommendations(recs: Map[String, List[String]],
                     movs: Map[String, String],
-                    mov_name: String) : List[String] = ???
+                    mov_name: String) : List[String] = {
+    val moviesList = movs.toList
+    val moviesRecursion = suggestions(recs, mov_name).take(2) match{
+      case Nil =>Nil
+      case List(_) => movs.toList.filter(_._1 == suggestions(recs, mov_name).take(2)(0))
+      case List(_,_) => movs.toList.filter(_._1 == suggestions(recs, mov_name).take(2)(0)) ++ movs.toList.filter(_._1 == suggestions(recs, mov_name).take(2)(1))
+    }
+    val movie = {
+      for((key,value)<-moviesRecursion) yield
+      value
+    }
+    movie
+}
 
 
 // testcases
@@ -205,7 +217,5 @@ def recommendations(recs: Map[String, List[String]],
 
 // recommendations(ratings_map, movies_map, "4")
 //   => Nil  (there are three ratings for this movie in ratings.csv but they are not positive)     
-
-
 
 }
