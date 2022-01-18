@@ -30,6 +30,7 @@ val movies_url = """https://nms.kcl.ac.uk/christian.urban/movies.csv"""
 //-----------
 //:
 //val movies = get_csv_url(movies_url)
+//val ratings = get_csv_url(ratings_url)
 
 //ratings.length  // 87313
 //movies.length   // 9742
@@ -153,8 +154,16 @@ def favourites(m: Map[String, List[String]], mov: String) : List[List[String]] =
 //     movies sorted according to the most frequently suggested movie(s) first.
 
 def suggestions(recs: Map[String, List[String]], 
-                mov_name: String) : List[String] = ???
-
+                mov_name: String) : List[String] = {
+    val favouritesList = favourites(recs, mov_name).flatten
+    val favouritesCount = favouritesList.groupBy(identity).mapValues(_.size).toList
+    val orderedList = favouritesCount.sortBy(_._2)
+    val LowToHigh = {
+      for ((k,v)<- orderedList)yield
+      k
+    }
+    LowToHigh.reverse
+}
 
 // testcases
 //-----------
@@ -174,7 +183,6 @@ def suggestions(recs: Map[String, List[String]],
 def recommendations(recs: Map[String, List[String]],
                     movs: Map[String, String],
                     mov_name: String) : List[String] = ???
-
 
 
 // testcases
