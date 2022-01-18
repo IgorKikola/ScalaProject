@@ -81,8 +81,6 @@ def similarity(s1: String, s2: String) : Double = {
     overlap(firstDocument,secondDocument)
 }
 
-
-
 /* Test cases
 
 
