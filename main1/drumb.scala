@@ -50,7 +50,16 @@ def get_first_price(symbol: String, year: Int) : Option[Double] = {
 //     stock symbols and the outer list for the years.
 
 
-def get_prices(portfolio: List[String], years: Range) : List[List[Option[Double]]] = ???
+def get_prices(portfolio: List[String], years: Range) : List[List[Option[Double]]] = {
+val firstPrice =(
+    for(year<-years)yield{
+      for(symbol<-portfolio)yield{
+            get_first_price(symbol,year)
+        }
+    }
+    ).toList
+    firstPrice
+}    
 
 
 
