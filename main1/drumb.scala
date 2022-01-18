@@ -56,9 +56,8 @@ val firstPrice =(
       for(symbol<-portfolio)yield{
             get_first_price(symbol,year)
         }
-    }
-    ).toList
-    firstPrice
+    })
+    firstPrice.toList
 }    
 
 
@@ -66,8 +65,9 @@ val firstPrice =(
 // (4) The function below calculates the change factor (delta) between
 //     a price in year n and a price in year n + 1. 
 
-def get_delta(price_old: Option[Double], price_new: Option[Double]) : Option[Double] = ???
-
+def get_delta(price_old: Option[Double], price_new: Option[Double]) : Option[Double] = {
+    for (x <-price_new; y <- price_old) yield (x-y)/y
+}
 
 
 // (5) The next function calculates all change factors for all prices (from a 
