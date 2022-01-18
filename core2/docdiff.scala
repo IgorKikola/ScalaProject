@@ -26,7 +26,10 @@ def clean(s: String) : List[String] = {
 //    be calculated as a Map from strings to integers.
 
 
-def occurrences(xs: List[String]): Map[String, Int] = ???
+def occurrences(xs: List[String]): Map[String, Int] = {
+    val myList = xs.groupBy(i=>i).mapValues(_.size)
+    myList
+}
 
 
 //(3) This functions calculates the dot-product of two documents
