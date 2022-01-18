@@ -78,9 +78,6 @@ def overlap(lst1: List[String], lst2: List[String]) : Double = {
 def similarity(s1: String, s2: String) : Double = {
     val firstDocument = clean(s1)
     val secondDocument = clean(s2)
-    val similarity = {
-        overlap(firstDocument,secondDocument)
-    }
-    similarity
+    overlap(firstDocument,secondDocument)
 }
 }
