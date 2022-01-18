@@ -81,7 +81,7 @@ def get_deltas(data: List[List[Option[Double]]]) :  List[List[Option[Double]]] =
   }
   val loopSize = listLength.head - 1
 
-  val symbolList ={
+  val symbolList = {
     for(x<-(0 to loopSize).toList)yield
     for(y<-data) yield
     y(x)
@@ -135,7 +135,7 @@ def yearly_yield(data: List[List[Option[Double]]], balance: Long, index: Int) : 
 //     with the appropriate deltas and the first index.
 
 def compound_yield(data: List[List[Option[Double]]], balance: Long, index: Int) : Long = {
-    if (index<data.length-1){
+    if (index<=data.length-1){
         compound_yield(data, yearly_yield(data,balance,index), index+1 )
     }
     else {
@@ -144,10 +144,8 @@ def compound_yield(data: List[List[Option[Double]]], balance: Long, index: Int) 
 }
 
 def investment(portfolio: List[String], years: Range, start_balance: Long) : Long = {
-    compound_yield(get_deltas(get_prices(portfolio, years)), start_balance, 0)
+  compound_yield(get_deltas(get_prices(portfolio, years)), start_balance, 0)
 }
-
-
 
 
 //Test cases for the two portfolios given above
