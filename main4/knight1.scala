@@ -51,9 +51,27 @@ def legal_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
 //    given path. The first function counts all possible tours, 
 //    and the second collects all tours in a list of paths.
 
-def count_tours(dim: Int, path: Path) : Int = ???
+def count_tours(dim: Int, path: Path) : Int = {
+    val validMoves = legal_moves(dim, path, path.head)
+    val x = legal_moves(dim, List(path.head), path.head).contains(path.last) && dim*dim == path.size
+      if (x) {0} 
+      else if (!x) {1} 
+      else {
+        (for (moves <- validMoves)
+            yield count_tours(dim, moves::path)).sum
+      }
+}
 
-def enum_tours(dim: Int, path: Path) : List[Path] = ???
+def enum_tours(dim: Int, path: Path) : List[Path] = {
+    val validMoves = legal_moves(dim, path, path.head)
+    val x = legal_moves(dim, List(path.head), path.head).contains(path.last) && dim*dim == path.size
+      if (x) {Nil} 
+      else if (!x) {List(path)} 
+      else {
+        (for (moves <- validMoves)
+            yield enum_tours(dim, moves::path)).flatten
+      }
+}
 
 
 //(4) Implement a first-function that finds the first 
@@ -61,8 +79,10 @@ def enum_tours(dim: Int, path: Path) : List[Path] = ???
 //    In that case Return f(x), otherwise None. If possible,
 //    calculate f(x) only once.
 
-def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = ???
-
+def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
+  case Nil => None
+  case x::tail => if(f(x).isDefined) f(x) else first(tail,f)
+}
 
 // testcases
 //
@@ -76,7 +96,9 @@ def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = ???
 //    trying out onward moves, and searches recursively for a
 //    knight tour on a dim * dim-board.
 
-def first_tour(dim: Int, path: Path) : Option[Path] = ???
+def first_tour(dim: Int, path: Path) : Option[Path] = {
+  first(legal_moves(dim, path, path.head), (valueToMap:Pos)=>first_tour(dim,valueToMap::path))
+}
  
 
 
