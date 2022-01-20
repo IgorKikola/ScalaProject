@@ -89,9 +89,7 @@ def der (c: Char, r: Rexp) : Rexp = r match {
 // and also 'spills out', or flattens, nested 
 // ALTernativeS.
 
-def flts(rs: List[Rexp]) : List[Rexp] = rs match {
-
-}
+def flts(rs: List[Rexp]) : List[Rexp] = ???
 
 
 
@@ -103,9 +101,7 @@ def flts(rs: List[Rexp]) : List[Rexp] = rs match {
 // STAR-regular expressions. Use the _.distinct and 
 // flts functions.
 
-def simp(r: Rexp) : Rexp = r match{
-
-}
+def simp(r: Rexp) : Rexp = ???
 
 
 // (5) Complete the two functions below; the first 
