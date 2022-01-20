@@ -46,11 +46,11 @@ def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
 }
 
 def first_closed_tour_heuristics(dim: Int, path: Path) : Option[Path] = {   
-    if (path.length == dim * dim && (legal_moves(dim, List(path.head), path.head).contains(path.last))) {
+    if (path.length == dim * dim) {
         Some(path)
     } 
     else {
-        first(ordered_moves(dim, path, path.head),(x=>first_closed_tour_heuristic(dim, x::path)))   
+		first(ordered_moves(dim,path,path.head),x=>first_closed_tour_heuristics(dim,x::path));  
     }     
 }
 
@@ -64,7 +64,7 @@ def first_tour_heuristics(dim: Int, path: Path) : Option[Path] = {
         Some(path)
     } 
     else {
-        first(ordered_moves(dim, path, path.head),(x=>first_closed_tour_heuristic(dim, x::path)))   
+		first(ordered_moves(dim,path,path.head),x=>first_tour_heuristics(dim,x::path));
     }     
 }
 
