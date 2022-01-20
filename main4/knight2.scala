@@ -41,19 +41,32 @@ def ordered_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
 //    function will be tested on a 6 x 6 board. 
 
 def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
-  case Nil => None
-  case x::xs => if(f(x).isDefined) f(x) else first(xs,f)
+    case Nil => None
+    case x::xs => if(f(x).isDefined) f(x) else first(xs,f)
 }
 
-def first_closed_tour_heuristics(dim: Int, path: Path) : Option[Path] = ???
+def first_closed_tour_heuristics(dim: Int, path: Path) : Option[Path] = {   
+    if (path.length == dim * dim && (legal_moves(dim, List(path.head), path.head).contains(path.last))) {
+        Some(path)
+    } 
+    else {
+        first(ordered_moves(dim, path, path.head),(x=>first_closed_tour_heuristic(dim, x::path)))   
+    }     
+}
 
 
 //(8) Same as (7) but searches for *non-closed* tours. This 
 //    version of the function will be called with dimensions of 
 //    up to 30 * 30.
 
-def first_tour_heuristics(dim: Int, path: Path) : Option[Path] = ???
-
+def first_tour_heuristics(dim: Int, path: Path) : Option[Path] = {   
+    if (path.length == dim * dim && (legal_moves(dim, List(path.head), path.head).contains(path.last))) {
+        Some(path)
+    } 
+    else {
+        first(ordered_moves(dim, path, path.head),(x=>first_closed_tour_heuristic(dim, x::path)))   
+    }     
+}
 
 
 }
