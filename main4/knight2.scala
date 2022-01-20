@@ -14,6 +14,17 @@ object M4b {
 type Pos = (Int, Int)    // a position on a chessboard 
 type Path = List[Pos]    // a path...a list of positions
 
+def is_legal(dim: Int, path: Path, x: Pos) : Boolean = {
+   val isLegal = (x._1 >= dim || x._2 >=dim || x._1 <0 || x._2 <0 && !path.contains(x)) 
+   isLegal
+}
+
+ 
+def legal_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
+    val possibleMoves = List((1,2),(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2))
+    val filteredList = possibleMoves.filter(currentMove => is_legal(dim, path, currentMove))
+    filteredList
+}
 
 //(6) Complete the function that calculates a list of onward
 //    moves like in (2) but orders them according to Warnsdorf’s 
@@ -21,7 +32,10 @@ type Path = List[Pos]    // a path...a list of positions
 //    should come first.
 
 
-def ordered_moves(dim: Int, path: Path, x: Pos) : List[Pos] = ???
+def ordered_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
+    val unsortedMoves = legal_moves(dim,path,x)
+    unsortedMoves
+}
 
 
 //(7) Complete the function that searches for a single *closed* 

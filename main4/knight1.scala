@@ -29,10 +29,8 @@ def is_legal(dim: Int, path: Path, x: Pos) : Boolean = {
 //    The moves should be ordered in a "clockwise" manner.
  
 def legal_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
-
-    val possibleMoves = List((1,2),(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2))
-    val filteredList = possibleMoves.filter(currentMove => is_legal(dim, path, currentMove))
-    filteredList
+    val legalMoves = List((x._1 + 1, x._2 + 2), (x._1 + 2, x._2 + 1), (x._1 + 2, x._2 - 1), (x._1 + 1, x._2 - 2), (x._1 - 1, x._2 - 2), (x._1 - 2, x._2 - 1), (x._1 - 2, x._2 + 1), (x._1 - 1, x._2 + 2))
+    legalMoves.filter(x=>is_legal(dim,path,x))
 }
     
 
@@ -74,19 +72,19 @@ def enum_tours(dim: Int, path: Path) : List[Path] = {
 }
 
 
-//(4) Implement a first-function that finds the first 
+//(4) Implement a first-function that finds the first
 //    element, say x, in the list xs where f is not None. 
 //    In that case Return f(x), otherwise None. If possible,
 //    calculate f(x) only once.
 
-def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
+def firstxs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
   case Nil => None
   case x::tail => if(f(x).isDefined) f(x) else first(tail,f)
 }
 
 // testcases
 //
-//def foo(x: (Int, Int)) = if (x._1 > 3) Some(List(x)) else None
+//def foo(x: (Int, Int)) = if (first > 3) Some(List(x)) else None
 //
 //first(List((1, 0),(2, 0),(3, 0),(4, 0)), foo)   // Some(List((4,0)))
 //first(List((1, 0),(2, 0),(3, 0)), foo)          // None
@@ -104,7 +102,7 @@ def first_tour(dim: Int, path: Path) : Option[Path] = {
     Some(path)
   }
   else{
-    first(legal_moves(dim, path, path.head), (x:Pos)=>first_tour(dim,x::path))
+    first(legal_moves(dim, path, path.head), (next:Pos)=>first_tour(dim,next::path))
   }
 }
  
