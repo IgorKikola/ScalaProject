@@ -67,19 +67,9 @@ def nullable (r: Rexp) : Boolean = r match {
 def der (c: Char, r: Rexp) : Rexp = r match {
     case ZERO => ZERO
     case ONE => ZERO
-    case CHAR(d) => if (c==d) {
-                      ONE
-                    } 
-                    else{
-                      ZERO
-                    }
-    case ALT(r1,r2) => ALT(der(c,r1), der(c,r2))
-    case SEQ(r1,r2) => if (nullable(r1)) {
-                          ALT(SEQ(der(c,r1),r2), der(c,r2))
-                       } 
-                       else{
-                          SEQ(der(c,r1),r2)
-                       }
+    case CHAR(d) => if(c == d) ONE else ZERO
+    case ALT(r1,r2) => ALT(der(c,r1),der(c,r2))
+    case SEQ(r1, r2) => if (nullable(r1)) ALT(SEQ(der(c, r1), r2), der(c, r2)) else SEQ(der(c, r1), r2)  
     case STAR(r) => SEQ(der(c,r), STAR(r))
 }
 
