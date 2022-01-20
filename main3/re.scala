@@ -53,7 +53,7 @@ def nullable (r: Rexp) : Boolean = r match {
     case ZERO => false
     case ONE => true
     case CHAR(c) => false
-    case ALT(r1,r2) => nullable(r1) || nullable(r2)
+    case ALTs(List(r1, r2)) => nullable(r1) || nullable(r2)
     case SEQ(r1,r2) => nullable(r1) && nullable(r2)
     case STAR(r) => true
 }
@@ -68,8 +68,8 @@ def der (c: Char, r: Rexp) : Rexp = r match {
     case ZERO => ZERO
     case ONE => ZERO
     case CHAR(d) => if(c == d) ONE else ZERO
-    case ALT(r1,r2) => ALT(der(c,r1),der(c,r2))
-    case SEQ(r1, r2) => if (nullable(r1)) ALT(SEQ(der(c, r1), r2), der(c, r2)) else SEQ(der(c, r1), r2)  
+    case ALTs(List(r1, r2)) => ALTs(List(der(c,r1),der(c,r2)))
+    case SEQ(r1, r2) => if (nullable(r1)) ALTs(List(SEQ(der(c, r1), r2), der(c, r2))) else SEQ(der(c, r1), r2)  
     case STAR(r) => SEQ(der(c,r), STAR(r))
 }
 
@@ -117,8 +117,8 @@ def size(r: Rexp): Int = r match{
   case ZERO => 1
   case ONE => 1
   case CHAR(c) => 1
-  case ALT(r1,r2) => 1 + size(r1) + size(r2)
-  case SEQ(r1,r1) => 1 + size(r1) + size(r2)
+  case ALTs(List(r1,r2)) => 1 + size(r1) + size(r2)
+  case SEQ(r1,r2) => 1 + size(r1) + size(r2)
   case STAR(r) => 1 + size(r)
 }
 

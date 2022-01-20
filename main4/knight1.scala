@@ -18,7 +18,7 @@ type Path = List[Pos]    // a path...a list of positions
 //    is inside the board and not yet element in the path.
 
 def is_legal(dim: Int, path: Path, x: Pos) : Boolean = {
-   val isLegal = (x._1 >= dim || x._2 >=dim || x._1 <0 || x._2 <0 && !path.contains(x)) 
+   val isLegal =(x._1 >= 0) && (x._1 < dim) && (x._2 >= 0) && (x._2 < dim) && !path.contains(x) 
    isLegal
 }
   
@@ -79,7 +79,7 @@ def enum_tours(dim: Int, path: Path) : List[Path] = {
 
 def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
   case Nil => None
-  case x::tail => if(f(x).isDefined) f(x) else first(tail,f)
+  case x::xs => if(f(x).isDefined) f(x) else first(xs,f)
 }
 
 // testcases
@@ -95,14 +95,11 @@ def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
 //    knight tour on a dim * dim-board.
 
 def first_tour(dim: Int, path: Path) : Option[Path] = {
-  if(path == Nil){
-    None
-  }
-  else if(path.length == dim * dim){
+  if(path.size == dim*dim){
     Some(path)
   }
   else{
-    first(legal_moves(dim, path, path.head), (next:Pos)=>first_tour(dim,next::path))
+    first(legal_moves(dim, path, path.head), (x=>first_tour(dim, x::path)))
   }
 }
  

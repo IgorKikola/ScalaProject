@@ -15,15 +15,14 @@ type Pos = (Int, Int)    // a position on a chessboard
 type Path = List[Pos]    // a path...a list of positions
 
 def is_legal(dim: Int, path: Path, x: Pos) : Boolean = {
-   val isLegal = (x._1 >= dim || x._2 >=dim || x._1 <0 || x._2 <0 && !path.contains(x)) 
+   val isLegal =(x._1 >= 0) && (x._1 < dim) && (x._2 >= 0) && (x._2 < dim) && !path.contains(x) 
    isLegal
 }
-
+  
  
 def legal_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
-    val possibleMoves = List((1,2),(2,1),(2,-1),(1,-2),(-1,-2),(-2,-1),(-2,1),(-1,2))
-    val filteredList = possibleMoves.filter(currentMove => is_legal(dim, path, currentMove))
-    filteredList
+    val legalMoves = List((x._1 + 1, x._2 + 2), (x._1 + 2, x._2 + 1), (x._1 + 2, x._2 - 1), (x._1 + 1, x._2 - 2), (x._1 - 1, x._2 - 2), (x._1 - 2, x._2 - 1), (x._1 - 2, x._2 + 1), (x._1 - 1, x._2 + 2))
+    legalMoves.filter(x=>is_legal(dim,path,x))
 }
 
 //(6) Complete the function that calculates a list of onward
@@ -34,14 +33,17 @@ def legal_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
 
 def ordered_moves(dim: Int, path: Path, x: Pos) : List[Pos] = {
     val unsortedMoves = legal_moves(dim,path,x)
-    unsortedMoves
+    unsortedMoves.sortBy(x=>legal_moves(dim, path, x).size)
 }
-
 
 //(7) Complete the function that searches for a single *closed* 
 //    tour using the ordered_moves function from (6). This
 //    function will be tested on a 6 x 6 board. 
 
+def first(xs: List[Pos], f: Pos => Option[Path]) : Option[Path] = xs match{
+  case Nil => None
+  case x::xs => if(f(x).isDefined) f(x) else first(xs,f)
+}
 
 def first_closed_tour_heuristics(dim: Int, path: Path) : Option[Path] = ???
 
