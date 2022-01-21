@@ -79,11 +79,7 @@ def der (c: Char, r: Rexp) : Rexp = r match {
 // and also 'spills out', or flattens, nested 
 // ALTernativeS.
 
-def flts(rs: List[Rexp]) : List[Rexp] = rs match {
-   case Nil => Nil
-   case (ls: List[Rexp]) :: tail => flts(ls) ::: flts(tail)
-   case h :: tail => h :: flts(tail)
-}
+def flts(rs: List[Rexp]) : List[Rexp] =  ???
 
 
 
@@ -104,7 +100,7 @@ def simp(r: Rexp) : Rexp = ???
 // expression and a string and checks whether the
 // string matches the regular expression
 
-def ders (s: List[Char], r: Rexp) : Rexp = (s,r) match ???
+def ders (s: List[Char], r: Rexp) : Rexp = ???
 
 def matcher(r: Rexp, s: String): Boolean = ???
 
