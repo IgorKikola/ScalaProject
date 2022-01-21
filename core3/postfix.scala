@@ -53,7 +53,52 @@ def prec(op1: String, op2: String) : Boolean = {
  }
 
 
-def syard(toks: Toks, st: Toks = Nil, out: Toks = Nil) : Toks = ???
+def syard(toks: Toks, st: Toks = Nil, out: Toks = Nil) : Toks = {
+	toks match {
+		case Nil => {
+			if (st==Nil){
+				out
+			}
+			else{
+				out ++ st.reverse
+			}
+	}
+		case start::end =>{
+			if(is_op(start)){
+				if(st == Nil){
+					syard(end, st ++ List(start), out)
+				}
+				else{
+					val stReversed = st.reverse
+					if (prec(stReversed.head,start)){
+						syard(end, stReversed.tail.reverse ++ List(start), out ++ List(stReversed.head))
+					}
+					else{
+						syard(end, st ++ List(start), out)
+					}
+				}
+
+			}
+			else if(start == "("){
+				syard(end, st ++ List(start), out)
+			}
+			else if (start ==")"){
+				val stReversed = st.reverse
+				if(is_op(stReversed.head)){
+					val stReversedBack = (stReversed.tail).tail
+					syard(end, stReversedBack.reverse, out ++ List(stReversed.head))
+				}
+				else{
+					val stReversedBack = stReversed.tail
+					syard(end, stReversedBack.reverse, out)
+				}
+			}
+			else{
+				syard(end, st, out ++ List(start))
+			}
+		}
+	}
+}
 
 
 // test cases
@@ -77,7 +122,16 @@ def syard(toks: Toks, st: Toks = Nil, out: Toks = Nil) : Toks = ???
 // this function will be only called with proper postfix 
 // expressions.    
 
-def compute(toks: Toks, st: List[Int] = Nil) : Int = ???
+def compute(toks: Toks, st: List[Int] = Nil) : Int = toks match {
+	case tok::_ if is_op(tok) => tok match {
+		case "+" => compute(toks.drop(1), (st.head + st(1)) :: st.drop(2))
+		case "-" => compute(toks.drop(1), (st(1) - st.head) :: st.drop(2))
+		case "*" => compute(toks.drop(1), (st.head * st(1)) :: st.drop(2))
+		case "/" => compute(toks.drop(1), (st(1) / st.head) :: st.drop(2))
+	}
+	case tok::tokens => compute(tokens,tok.toInt :: st)
+	case Nil => st.head
+}
 
 
 // test cases

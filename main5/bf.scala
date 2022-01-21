@@ -52,9 +52,40 @@ def write(mem: Mem, mp: Int, v: Int) : Mem = {
 // jumpLeft implements the move to the left to just after
 // the *matching* [-command.
 
-def jumpRight(prog: String, pc: Int, level: Int) : Int = ???
+def jumpRight(prog: String, pc: Int, level: Int) : Int = {
+    val first = prog.indexOf("[", pc)
+    val second = prog.indexOf("]", pc)
+    if(second == -1) { 
+        prog.length()
+    }
+    else if (level == 0 && (second < first || first == -1)) {
+        second + 1
+    }
+    else if (second < first || first == -1) {
+        jumpRight(prog, second + 1, level + 1)
+    }
+    else {
+        jumpRight(prog, first + 1, level - 1)
+    }
+}
 
-def jumpLeft(prog: String, pc: Int, level: Int) : Int = ???
+def jumpLeft(prog: String, pc: Int, level: Int) : Int = {
+    val first = prog.lastIndexOf("]", pc)
+    val second = prog.lastIndexOf("[", pc)
+    if (second == -1){ 
+        -1
+    }
+    else if (level == 0 && (second > first || first == -1)) {
+        second + 1
+    }
+    else if (second > first || first == -1){ 
+        jumpLeft(prog, second - 1, level + 1)
+    }
+    else {
+        jumpLeft(prog, first - 1, level - 1)
+    }
+}
+
 
 
 // testcases
@@ -83,9 +114,40 @@ def jumpLeft(prog: String, pc: Int, level: Int) : Int = ???
 // counter and memory counter set to 0.
 
 
-def compute(prog: String, pc: Int, mp: Int, mem: Mem) : Mem = ???
+def compute(prog: String, pc: Int, mp: Int, mem: Mem) : Mem = {
+    if(pc>=prog.length()){
+        mem
+    }
+    else{
+        prog.charAt(pc)
+    }
+    match{
+        case'>'=>compute(prog,pc + 1, mp + 1,mem)
+        case'<'=>compute(prog,pc + 1, mp - 1,mem)
+        case'+'=>compute(prog,pc + 1, mp, write(mem,mp,sread(mem,mp) + 1))
+        case'-'=>compute(prog,pc + 1, mp, write(mem,mp,sread(mem,mp) - 1))
+        case'.'=>print(sread(mem,mp).toChar); 
+        compute(prog,pc + 1,mp,mem)
+        case','=>compute(prog, pc + 1,mp,mem +(mp->Console.in.read().toByte))
+        case'['=>if(sread(mem,mp)==0){
+            compute(prog, jumpRight(prog, pc + 1, 0), mp, mem) 
+        }
+        else {
+            compute(prog,pc + 1,mp,mem)
+        }
+        case']'=>if(sread(mem,mp)!=0){
+            compute(prog, jumpLeft(prog,pc -1,0),mp,mem) 
+        }
+        else {
+            compute(prog,pc + 1,mp,mem)
+        }
+        case anythingElse => compute(prog,pc + 1,mp, mem)
+        }
+}
 
-def run(prog: String, m: Mem = Map()) = ???
+def run(prog: String, m: Mem = Map()) = {
+      compute(prog,0,0,m)
+}
 
 
 
